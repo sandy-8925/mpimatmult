@@ -1,0 +1,5 @@
+sandeep@Zangetsu:~/Documents/cse633/project$ time build/seq_mat_mult_2 
+
+real	33m23.122s
+user	33m21.430s
+sys	0m0.380s
