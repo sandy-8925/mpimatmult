@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <mpi.h>
 
+#define SIZE 10
+
 int main(int argc, char **argv)
 {
 int i,ierr,rank,size,dest,source,from,to,count,tag;
 int stat_count, stat_source, stat_tag;
-float data[1000];
+float data[SIZE];
 MPI_Status status;
 
 MPI_Init(&argc,&argv);
@@ -19,21 +21,22 @@ source = 0;
 if( rank == source )
 {
 to = dest;
-count = 1000;
+count = SIZE;
 tag = 11;
-for(i=0;i<1000;i++) data[i]=i;
-ierr = MPI_Send(data, count, MPI_REAL, to, tag, MPI_COMM_WORLD);
+for(i=0 ; i<SIZE ; i++) data[i]=i;
+for(to=1 ; to < size ; to++)
+    ierr = MPI_Send(data, count, MPI_REAL, to, tag, MPI_COMM_WORLD);
 }
 else if( rank == dest )
 {
 tag = MPI_ANY_TAG;
-count = 1000;
+count = SIZE;
 from = MPI_ANY_SOURCE;
 ierr = MPI_Recv(data, count, MPI_REAL, from, tag, MPI_COMM_WORLD, &status);
 ierr = MPI_Get_count(&status, MPI_REAL, &stat_count);
 stat_source = status.MPI_SOURCE;
 stat_tag = status.MPI_TAG;
-printf("Status of receive: dest=%d source=%d tag=%d count=%d\n", rank, stat_source, stat_tag, stat_count);
+printf("Process %d: Status of receive: dest=%d source=%d tag=%d count=%d\n", rank, rank, stat_source, stat_tag, stat_count);
 }
 
 
