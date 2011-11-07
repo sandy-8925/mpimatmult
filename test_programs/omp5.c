@@ -7,8 +7,8 @@
 int main()
 {
 int thread_id=0,nthreads,counter1,counter2,counter3,tempsum;
-int matA_rows=1000,matA_cols=1000;
-int matB_rows=1000,matB_cols=1000;
+int matA_rows=4000,matA_cols=4000;
+int matB_rows=4000,matB_cols=4000;
 int matC_rows=matA_rows,matC_cols=matB_cols;
 int *matrixA,*matrixB,*matrixC;
 int *temp_ptr,*mstart,*mend,*ptr;
