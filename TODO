@@ -1,2 +1,3 @@
 write script to test. should automatically start tests, time them and should notify me that it's finished. (use espeak or email)
 
+use multiple processors per node, use openmp to distribute single node's work among multiple cores/processors. does not require communication between MPI processes runnning on same node

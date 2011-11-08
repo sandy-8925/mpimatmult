@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <mpi.h>
+#include <stdlib.h>
 
-#define SIZE 10
+#define SIZE 10000
 
 int main(int argc, char **argv)
 {
 int i,ierr,rank,size,dest,source,from,to,count,tag;
 int stat_count, stat_source, stat_tag;
-float data[SIZE];
+float *data;
 MPI_Status status;
 
 MPI_Init(&argc,&argv);
@@ -23,11 +24,12 @@ if( rank == source )
 to = dest;
 count = SIZE;
 tag = 11;
-for(i=0 ; i<SIZE ; i++) data[i]=i;
+data = (float *) calloc(SIZE, sizeof(float));
+for(i=0 ; i<SIZE ; i++) { *(data + i) = i; }
 for(to=1 ; to < size ; to++)
     ierr = MPI_Send(data, count, MPI_REAL, to, tag, MPI_COMM_WORLD);
 }
-else if( rank == dest )
+else
 {
 tag = MPI_ANY_TAG;
 count = SIZE;
