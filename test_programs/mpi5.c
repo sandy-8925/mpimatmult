@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <mpi.h>
+#include <stdlib.h>
 
 int main(int argc, char **argv)
 {
 int i,ierr,rank,size,dest,source,from,to,count,tag;
 int stat_count, stat_source, stat_tag;
-int mat1_rows=1000,mat1_cols=1000;
+int mat1_rows=10000,mat1_cols=10000;
 int *matrix1;
 int matsize = mat1_rows * mat1_cols;
 MPI_Status status;
