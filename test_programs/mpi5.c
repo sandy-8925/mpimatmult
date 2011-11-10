@@ -32,7 +32,7 @@ tag = MPI_ANY_TAG;
 from = MPI_ANY_SOURCE;
 matrix1 = (int *) calloc(matsize, sizeof(int));
 ierr = MPI_Recv(matrix1, matsize, MPI_INT, from, tag, MPI_COMM_WORLD, &status);
-ierr = MPI_Get_count(&status, MPI_REAL, &stat_count);
+ierr = MPI_Get_count(&status, MPI_INT, &stat_count);
 stat_source = status.MPI_SOURCE;
 stat_tag = status.MPI_TAG;
 printf("Process %d: Status of receive: dest=%d source=%d tag=%d count=%d\n", rank, rank, stat_source, stat_tag, stat_count);

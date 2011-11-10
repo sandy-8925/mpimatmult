@@ -10,7 +10,7 @@ int mat1_rows=10000,mat1_cols=10000;
 int *matrix1;
 int matsize = mat1_rows * mat1_cols;
 MPI_Status status;
-MPI_request request;
+MPI_Request request;
 
 MPI_Init(&argc,&argv);
 MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -26,6 +26,7 @@ matrix1 = (int *) calloc(matsize, sizeof(int));
 for(i=0 ; i<matsize ; i++) { *(matrix1 + i) = i%255; }
 for(to=1 ; to < size ; to++)
     ierr = MPI_Isend(matrix1, matsize, MPI_INT, to, tag, MPI_COMM_WORLD,&request);
+printf("Process %d: Finished sending all data\n",rank);
 }
 else
 {
@@ -33,7 +34,7 @@ tag = MPI_ANY_TAG;
 from = MPI_ANY_SOURCE;
 matrix1 = (int *) calloc(matsize, sizeof(int));
 ierr = MPI_Recv(matrix1, matsize, MPI_INT, from, tag, MPI_COMM_WORLD, &status);
-ierr = MPI_Get_count(&status, MPI_REAL, &stat_count);
+ierr = MPI_Get_count(&status, MPI_INT, &stat_count);
 stat_source = status.MPI_SOURCE;
 stat_tag = status.MPI_TAG;
 printf("Process %d: Status of receive: dest=%d source=%d tag=%d count=%d\n", rank, rank, stat_source, stat_tag, stat_count);
