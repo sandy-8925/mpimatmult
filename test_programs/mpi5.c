@@ -4,11 +4,12 @@
 
 int main(int argc, char **argv)
 {
-int i,ierr,rank,size,dest,source,from,to,count,tag;
+int ierr,rank,size,dest,source,from,to,count,tag;
+long i;
 int stat_count, stat_source, stat_tag;
 int mat1_rows=10000,mat1_cols=10000;
 int *matrix1;
-int matsize = mat1_rows * mat1_cols;
+long matsize = mat1_rows * mat1_cols;
 MPI_Status status;
 
 MPI_Init(&argc,&argv);
@@ -38,7 +39,7 @@ stat_tag = status.MPI_TAG;
 printf("Process %d: Status of receive: dest=%d source=%d tag=%d count=%d\n", rank, rank, stat_source, stat_tag, stat_count);
 }
 
-
+free(matrix1);
 ierr = MPI_Finalize();
 return 0;
 }

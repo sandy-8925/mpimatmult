@@ -41,8 +41,8 @@ stat_source = status.MPI_SOURCE;
 stat_tag = status.MPI_TAG;
 printf("Process %d: Status of receive: dest=%d source=%d tag=%d count=%d\n", rank, rank, stat_source, stat_tag, stat_count);
 }
-
 free(data);
+printf("Process %d exiting\n",rank);
 ierr = MPI_Finalize();
 return 0;
 }
