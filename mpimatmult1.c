@@ -72,7 +72,6 @@ if(rank==0)
 {
 //print result matrix to screen
 sprintf(outstring,"Resultmatrix data:\n");
-tempptr = resultmatrix;
 for(counter1=0 ; counter1<resultmat_rows ; counter1++)
 {
 for(counter2=0; counter2<resultmat_cols; counter2++)
