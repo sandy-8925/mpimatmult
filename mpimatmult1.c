@@ -16,8 +16,8 @@ int main(int argc, char **argv)
 {
 int ierr,size,source;
 long i,counter;
-int mat1_rows=10,mat1_cols=10;
-int mat2_rows=10,mat2_cols=10;
+int mat1_rows=1000,mat1_cols=1000;
+int mat2_rows=1000,mat2_cols=1000;
 int resultmat_rows=mat1_rows,resultmat_cols=mat2_cols;
 int *matrix1,*matrix2,*resultmatrix;
 long mat1size = mat1_rows * mat1_cols;
@@ -51,7 +51,7 @@ else
 MPI_Bcast(matrix1, mat1size, MPI_INT, source, MPI_COMM_WORLD);
 MPI_Bcast(matrix2, mat2size, MPI_INT, source, MPI_COMM_WORLD);
 
-int counter1,counter2,counter3;
+long counter1,counter2,counter3;
 
 //do matrix multiplication
 for(counter1 = rank*resultmat_rows/size ; counter1 < (rank+1)*resultmat_rows/size ; counter1++)
