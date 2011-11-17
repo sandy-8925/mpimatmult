@@ -54,6 +54,7 @@ MPI_Bcast(matrix2, mat2size, MPI_INT, source, MPI_COMM_WORLD);
 
 int counter1,counter2,counter3;
 
+//do matrix multiplication
 for(counter1 = rank*resultmat_rows/size ; counter1 < (rank+1)*resultmat_rows/size ; counter1++)
 {
 for(counter2=0 ; counter2<resultmat_cols; counter2++)
@@ -65,11 +66,10 @@ for(counter3=0 ; counter3<mat1_cols ; counter3++)
 }
 }
 
+//return result to process rank 0
+MPI_Gather(resultmatsize);
 
-//do matrix multiplication
-
-
-sprintf(outstring,"finished",rank);
+sprintf(outstring,"finished");
 debugprintf(outstring);
 
 MPI_Barrier(MPI_COMM_WORLD);
