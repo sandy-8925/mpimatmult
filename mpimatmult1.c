@@ -23,7 +23,7 @@ int *matrix1,*matrix2,*resultmatrix;
 long mat1size = mat1_rows * mat1_cols;
 long mat2size = mat2_rows * mat2_cols;
 long resultmatsize = resultmat_rows * resultmat_cols;
-char outstring[10000];
+char outstring[10000],temp[20];
 
 MPI_Init(&argc,&argv);
 MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -48,7 +48,6 @@ else
 }
 
 //distribute data
-//MPI_Scatter(mat1_data, mat1size/size, MPI_INT, matrix1, mat1size/size, MPI_INT, source, MPI_COMM_WORLD);
 MPI_Bcast(matrix1, mat1size, MPI_INT, source, MPI_COMM_WORLD);
 MPI_Bcast(matrix2, mat2size, MPI_INT, source, MPI_COMM_WORLD);
 
@@ -67,12 +66,28 @@ for(counter3=0 ; counter3<mat1_cols ; counter3++)
 }
 
 //return result to process rank 0
-MPI_Gather(resultmatsize);
+MPI_Gather(resultmatrix + (rank*resultmatsize)/size, resultmatsize/size, MPI_INT, resultmatrix, resultmatsize/size, MPI_INT, source, MPI_COMM_WORLD);
+
+if(rank==0)
+{
+//print result matrix to screen
+sprintf(outstring,"Resultmatrix data:\n");
+tempptr = resultmatrix;
+for(counter1=0 ; counter1<resultmat_rows ; counter1++)
+{
+for(counter2=0; counter2<resultmat_cols; counter2++)
+{
+sprintf(temp,"%d ",*(resultmatrix + (counter1*resultmat_cols) + counter2));
+strcat(outstring,temp);
+}
+strcat(outstring,"\n");
+}
+debugprintf(outstring);
+}
 
 sprintf(outstring,"finished");
 debugprintf(outstring);
 
-MPI_Barrier(MPI_COMM_WORLD);
 ierr = MPI_Finalize();
 free(matrix1);
 free(matrix2);
