@@ -68,6 +68,7 @@ for(counter3=0 ; counter3<mat1_cols ; counter3++)
 //return result to process rank 0
 MPI_Gather(resultmatrix + (rank*resultmatsize)/size, resultmatsize/size, MPI_INT, resultmatrix, resultmatsize/size, MPI_INT, source, MPI_COMM_WORLD);
 
+/*
 if(rank==0)
 {
 //print result matrix to screen
@@ -83,6 +84,7 @@ strcat(outstring,"\n");
 }
 debugprintf(outstring);
 }
+*/
 
 sprintf(outstring,"finished");
 debugprintf(outstring);
