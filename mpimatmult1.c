@@ -16,10 +16,10 @@ int main(int argc, char **argv)
 {
 int ierr,size,source;
 long i,counter;
-int mat1_rows=1000,mat1_cols=1000;
-int mat2_rows=1000,mat2_cols=1000;
+int mat1_rows=10,mat1_cols=10;
+int mat2_rows=10,mat2_cols=10;
 int resultmat_rows=mat1_rows,resultmat_cols=mat2_cols;
-int *matrix1,*matrix2,*resultmatrix;
+int *matrix1,*matrix2,*resultmatrix,*resultmat_data,*mat1_data;
 long mat1size = mat1_rows * mat1_cols;
 long mat2size = mat2_rows * mat2_cols;
 long resultmatsize = resultmat_rows * resultmat_cols;
@@ -33,14 +33,16 @@ sprintf(outstring,"I am process %d of %d", rank, size);
 debugprintf(outstring);
 
 source = 0;
-matrix1 = (int *) calloc(mat1size, sizeof(int));
+matrix1 = (int *) calloc(mat1size/size, sizeof(int));
 matrix2 = (int *) calloc(mat2size, sizeof(int));
-resultmatrix = (int *) calloc(resultmatsize, sizeof(int));
+resultmatrix = (int *) calloc(resultmatsize/size, sizeof(int));
 
 if( rank == source )
 {
 //initialize all data
-for(i=0 ; i<mat1size ; i++) { *(matrix1 + i) = i; }
+resultmat_data = (int *) calloc(resultmatsize, sizeof(int));
+mat1_data = (int *) calloc(mat1size,sizeof(int));
+for(i=0 ; i<mat1size ; i++) { *(mat1_data + i) = i; }
 for(i=0 ; i<mat2size ; i++) { *(matrix2 + i) = i; }
 }
 else
@@ -48,8 +50,14 @@ else
 }
 
 //distribute data
-MPI_Bcast(matrix1, mat1size, MPI_INT, source, MPI_COMM_WORLD);
+//MPI_Bcast(matrix1, mat1size, MPI_INT, source, MPI_COMM_WORLD);
+MPI_Scatter(mat1_data, mat1size/size, MPI_INT, matrix1, mat1size/size, MPI_INT, source, MPI_COMM_WORLD);
 MPI_Bcast(matrix2, mat2size, MPI_INT, source, MPI_COMM_WORLD);
+
+if(rank == source)
+{
+free(mat1_data);
+}
 
 long counter1,counter2,counter3;
 
@@ -68,7 +76,6 @@ for(counter3=0 ; counter3<mat1_cols ; counter3++)
 //return result to process rank 0
 MPI_Gather(resultmatrix + (rank*resultmatsize)/size, resultmatsize/size, MPI_INT, resultmatrix, resultmatsize/size, MPI_INT, source, MPI_COMM_WORLD);
 
-/*
 if(rank==0)
 {
 //print result matrix to screen
@@ -84,7 +91,6 @@ strcat(outstring,"\n");
 }
 debugprintf(outstring);
 }
-*/
 
 sprintf(outstring,"finished");
 debugprintf(outstring);
