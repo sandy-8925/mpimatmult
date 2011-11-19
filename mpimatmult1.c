@@ -16,8 +16,8 @@ int main(int argc, char **argv)
 {
 int ierr,size,source;
 long i,counter;
-int mat1_rows=10,mat1_cols=10;
-int mat2_rows=10,mat2_cols=10;
+int mat1_rows=1000,mat1_cols=1000;
+int mat2_rows=1000,mat2_cols=1000;
 int resultmat_rows=mat1_rows,resultmat_cols=mat2_cols;
 int *matrix1,*matrix2,*resultmatrix,*resultmat_data,*mat1_data;
 long mat1size = mat1_rows * mat1_cols;
@@ -74,6 +74,7 @@ for(counter3=0 ; counter3<mat1_cols ; counter3++)
 //return result to process rank 0
 MPI_Gather(resultmatrix , resultmatsize/size, MPI_INT, resultmat_data, resultmatsize/size, MPI_INT, source, MPI_COMM_WORLD);
 
+/*
 if(rank==0)
 {
 //print result matrix to screen
@@ -89,6 +90,7 @@ strcat(outstring,"\n");
 }
 debugprintf(outstring);
 }
+*/
 
 sprintf(outstring,"finished");
 debugprintf(outstring);
