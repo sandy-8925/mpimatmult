@@ -55,14 +55,12 @@ MPI_Scatter(mat1_data, mat1size/size, MPI_INT, matrix1, mat1size/size, MPI_INT, 
 MPI_Bcast(matrix2, mat2size, MPI_INT, source, MPI_COMM_WORLD);
 
 if(rank == source)
-{
-free(mat1_data);
-}
+{ free(mat1_data); }
 
 long counter1,counter2,counter3;
 
 //do matrix multiplication
-for(counter1 = rank*resultmat_rows/size ; counter1 < (rank+1)*resultmat_rows/size ; counter1++)
+for(counter1 = 0 ; counter1 < resultmat_rows/size ; counter1++)
 {
 for(counter2=0 ; counter2<resultmat_cols; counter2++)
 {
@@ -74,7 +72,7 @@ for(counter3=0 ; counter3<mat1_cols ; counter3++)
 }
 
 //return result to process rank 0
-MPI_Gather(resultmatrix + (rank*resultmatsize)/size, resultmatsize/size, MPI_INT, resultmatrix, resultmatsize/size, MPI_INT, source, MPI_COMM_WORLD);
+MPI_Gather(resultmatrix , resultmatsize/size, MPI_INT, resultmat_data, resultmatsize/size, MPI_INT, source, MPI_COMM_WORLD);
 
 if(rank==0)
 {
@@ -84,7 +82,7 @@ for(counter1=0 ; counter1<resultmat_rows ; counter1++)
 {
 for(counter2=0; counter2<resultmat_cols; counter2++)
 {
-sprintf(temp,"%d ",*(resultmatrix + (counter1*resultmat_cols) + counter2));
+sprintf(temp,"%d ",*(resultmat_data + (counter1*resultmat_cols) + counter2));
 strcat(outstring,temp);
 }
 strcat(outstring,"\n");
@@ -94,6 +92,9 @@ debugprintf(outstring);
 
 sprintf(outstring,"finished");
 debugprintf(outstring);
+
+if(rank == source)
+{ free(resultmat_data); }
 
 ierr = MPI_Finalize();
 free(matrix1);
