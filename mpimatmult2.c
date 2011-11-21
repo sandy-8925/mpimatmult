@@ -91,15 +91,15 @@ for(counter2=0 ; counter2<resultmat_cols/size ; counter2++)
 {
 int tempsum = 0;
 for(counter3=0 ; counter3<mat1_cols ; counter3++)
-{ tempsum += *(matrix1 + counter1*mat1_cols + counter3) * *(matrix2 + counter2*mat2_cols + counter3); }
-*(resultmatrix + counter1*resultmat_cols + counter2+((portion*resultmat_cols)/size)) = tempsum;
+{ tempsum += *(matrix1 + counter1*mat1_cols + counter3) * *(matrix2 + counter2*mat2_rows + counter3); }
+*(resultmatrix + counter1*resultmat_cols + portion*resultmat_cols/size + counter2  ) = tempsum;
 }
 }
 //exchange data if required
 if(counter4<size-1)
 {
 MPI_Barrier(MPI_COMM_WORLD);
-//do non-blocking send and receive
+//do non-blocking send and blocking receive
 bcopy(matrix2, mat2_data, mat2size*sizeof(int)/size);
 MPI_Isend(mat2_data, mat2size/size, MPI_INT, (rank+1)%rank, MATB_EXCHANGE_TAG, MPI_COMM_WORLD, &request);
 MPI_Recv(matrix2, mat2size/size, MPI_INT, (rank-1)%rank, MATB_EXCHANGE_TAG, MPI_COMM_WORLD, &status);
