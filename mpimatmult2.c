@@ -45,6 +45,8 @@ matrix1 = (int *) calloc(mat1size/size, sizeof(int));
 matrix2 = (int *) calloc(mat2size/size, sizeof(int));
 resultmatrix = (int *) calloc(resultmatsize/size, sizeof(int));
 
+
+
 if( rank == source )
 {
 //initialize all data
@@ -57,6 +59,9 @@ for(i=0 ; i<mat2size ; i++) { *(mat2_data + i) = i; }
 else
 {
 }
+
+sprintf(outstring,"About to distribute data");
+debugprintf(outstring);
 
 //distribute data
 MPI_Scatter(mat1_data, mat1size/size, MPI_INT, matrix1, mat1size/size, MPI_INT, source, MPI_COMM_WORLD);
@@ -73,6 +78,9 @@ mat1_data=mat2_data=NULL;
 long counter1,counter2,counter3,counter4;
 
 mat2_data = (int *) calloc(mat2size/size, sizeof(int));
+
+sprintf(outstring,"Finished distributing data and about to start matrix multiplication");
+debugprintf(outstring);
 
 for(counter4=0; counter4<size; counter4++)
 {
