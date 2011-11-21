@@ -95,6 +95,9 @@ for(counter3=0 ; counter3<mat1_cols ; counter3++)
 *(resultmatrix + counter1*resultmat_cols + portion*resultmat_cols/size + counter2  ) = tempsum;
 }
 }
+sprintf(outstring, "Finished round %d", counter4);
+debugprintf(outstring);
+/*
 //exchange data if required
 if(counter4<size-1)
 {
@@ -104,6 +107,7 @@ bcopy(matrix2, mat2_data, mat2size*sizeof(int)/size);
 MPI_Isend(mat2_data, mat2size/size, MPI_INT, (rank+1)%rank, MATB_EXCHANGE_TAG, MPI_COMM_WORLD, &request);
 MPI_Recv(matrix2, mat2size/size, MPI_INT, (rank-1)%rank, MATB_EXCHANGE_TAG, MPI_COMM_WORLD, &status);
 }
+*/
 }
 
 sprintf(outstring,"Matrix multiplication finished\n");
