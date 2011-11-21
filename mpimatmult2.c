@@ -56,9 +56,8 @@ mat2_data = (int *) calloc(mat2size,sizeof(int));
 for(i=0 ; i<mat1size ; i++) { *(mat1_data + i) = i; }
 for(i=0 ; i<mat2size ; i++) { *(mat2_data + i) = i; }
 }
-else
-{
-}
+
+MPI_Barrier(MPI_COMM_WORLD);
 
 sprintf(outstring,"About to distribute data");
 debugprintf(outstring);
