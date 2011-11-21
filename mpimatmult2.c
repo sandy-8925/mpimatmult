@@ -25,7 +25,7 @@ long i,counter;
 int mat1_rows=1000,mat1_cols=1000;
 int mat2_rows=1000,mat2_cols=1000;
 int resultmat_rows=mat1_rows,resultmat_cols=mat2_cols;
-int *matrix1,*matrix2,*resultmatrix,*resultmat_data,*mat1_data=NULL,*mat2_data=NULL
+int *matrix1,*matrix2,*resultmatrix,*resultmat_data,*mat1_data=NULL,*mat2_data=NULL;
 long mat1size = mat1_rows * mat1_cols;
 long mat2size = mat2_rows * mat2_cols;
 long resultmatsize = resultmat_rows * resultmat_cols;
