@@ -45,8 +45,6 @@ matrix1 = (int *) calloc(mat1size/size, sizeof(int));
 matrix2 = (int *) calloc(mat2size/size, sizeof(int));
 resultmatrix = (int *) calloc(resultmatsize/size, sizeof(int));
 
-
-
 if( rank == source )
 {
 //initialize all data
@@ -55,6 +53,8 @@ mat1_data = (int *) calloc(mat1size,sizeof(int));
 mat2_data = (int *) calloc(mat2size,sizeof(int));
 for(i=0 ; i<mat1size ; i++) { *(mat1_data + i) = i; }
 for(i=0 ; i<mat2size ; i++) { *(mat2_data + i) = i; }
+sprintf(outstring, "Finished generating data");
+debugprintf(outstring);
 }
 
 MPI_Barrier(MPI_COMM_WORLD);
@@ -83,7 +83,9 @@ debugprintf(outstring);
 
 for(counter4=0; counter4<size; counter4++)
 {
-int portion = (rank - counter4)%rank;
+sprintf(outstring, "Started round %d", counter4);
+debugprintf(outstring);
+int portion = (rank - counter4)%size;
 for(counter1=0 ; counter1<resultmat_rows/size ; counter1++)
 {
 for(counter2=0 ; counter2<resultmat_cols/size ; counter2++)
@@ -116,7 +118,6 @@ MPI_Barrier(MPI_COMM_WORLD);
 free(mat2_data);
 mat2_data=NULL;
 //return result to process rank 0
-//note: resultmatrix is transpose of actual answer. to get original answer, need to transpose in master process (rank 0)
 MPI_Gather(resultmatrix , resultmatsize/size, MPI_INT, resultmat_data, resultmatsize/size, MPI_INT, source, MPI_COMM_WORLD);
 
 /*
