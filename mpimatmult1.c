@@ -5,7 +5,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+//process rank. made global for debugprintf function
 int rank;
+
+#define ERR_NOT_ENOUGH_ARGUMENTS -5;
 
 void debugprintf(char *string)
 {
@@ -24,6 +27,21 @@ long mat1size = mat1_rows * mat1_cols;
 long mat2size = mat2_rows * mat2_cols;
 long resultmatsize = resultmat_rows * resultmat_cols;
 char outstring[10000],temp[20];
+
+if(argc<5)
+{
+printf("Not enough arguments\n");
+return ERR_NOT_ENOUGH_ARGUMENTS;
+}
+else
+{
+mat1_rows = atoi(argv[1]);
+mat1_cols = atoi(argv[2]);
+mat2_rows = atoi(argv[3]);
+mat2_cols = atoi(argv[4]);
+resultmat_rows = mat1_rows;
+resultmat_cols = mat2_cols;
+}
 
 MPI_Init(&argc,&argv);
 MPI_Comm_rank(MPI_COMM_WORLD, &rank);

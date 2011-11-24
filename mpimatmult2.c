@@ -10,7 +10,9 @@ if reading from a file or using arbitrary matrix dimensions or both, must transp
 #include <string.h>
 
 #define MATB_EXCHANGE_TAG 5
+#define ERR_NOT_ENOUGH_ARGUMENTS -5;
 
+//process rank. made global for debugprintf function
 int rank;
 
 void debugprintf(char *string)
@@ -32,6 +34,21 @@ long resultmatsize = resultmat_rows * resultmat_cols;
 char outstring[10000],temp[20];
 MPI_Request request;
 MPI_Status status;
+
+if(argc<5)
+{
+printf("Not enough arguments\n");
+return ERR_NOT_ENOUGH_ARGUMENTS;
+}
+else
+{
+mat1_rows = atoi(argv[1]);
+mat1_cols = atoi(argv[2]);
+mat2_rows = atoi(argv[3]);
+mat2_cols = atoi(argv[4]);
+resultmat_rows = mat1_rows;
+resultmat_cols = mat2_cols;
+}
 
 MPI_Init(&argc,&argv);
 MPI_Comm_rank(MPI_COMM_WORLD, &rank);
