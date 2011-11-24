@@ -140,14 +140,15 @@ debugprintf(outstring);
 
 sprintf(outstring,"finished");
 debugprintf(outstring);
-
+/*
 if(rank == source)
 { free(resultmat_data); }
-
-ierr = MPI_Finalize();
+*/
 free(matrix1);
 free(matrix2);
-free(resultmatrix);
+//free(resultmatrix);
+
+ierr = MPI_Finalize();
 
 return 0;
 }

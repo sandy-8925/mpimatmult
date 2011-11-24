@@ -58,7 +58,8 @@ if(rank == source)
 { free(mat1_data); }
 
 long counter1,counter2,counter3;
-
+sprintf(outstring,"about to start matrix multiplication");
+debugprintf(outstring);
 //do matrix multiplication
 for(counter1 = 0 ; counter1 < resultmat_rows/size ; counter1++)
 {
@@ -71,8 +72,14 @@ for(counter3=0 ; counter3<mat1_cols ; counter3++)
 }
 }
 
+sprintf(outstring,"matrix multiplication finished");
+debugprintf(outstring);
+
 //return result to process rank 0
 MPI_Gather(resultmatrix , resultmatsize/size, MPI_INT, resultmat_data, resultmatsize/size, MPI_INT, source, MPI_COMM_WORLD);
+
+sprintf(outstring,"matrix gathering finished");
+debugprintf(outstring);
 
 /*
 if(rank==0)
