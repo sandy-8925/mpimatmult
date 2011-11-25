@@ -80,10 +80,12 @@ if(rank == source)
 long counter1,counter2,counter3;
 sprintf(outstring,"about to start matrix multiplication");
 debugprintf(outstring);
-//do matrix multiplication
 
+
+MPI_Barrier(MPI_COMM_WORLD);
 start_time = MPI_Wtime();
 
+//do matrix multiplication
 for(counter1 = 0 ; counter1 < resultmat_rows/size ; counter1++)
 {
 for(counter2=0 ; counter2<resultmat_cols; counter2++)
@@ -95,7 +97,9 @@ for(counter3=0 ; counter3<mat1_cols ; counter3++)
 }
 }
 
+MPI_Barrier(MPI_COMM_WORLD);
 end_time = MPI_Wtime();
+
 sprintf(outstring, "MPI Walltime: %f",end_time - start_time);
 debugprintf(outstring);
 
@@ -103,7 +107,6 @@ sprintf(outstring, "matrix multiplication finished");
 debugprintf(outstring);
 
 //return result to process rank 0
-MPI_Barrier(MPI_COMM_WORLD);
 MPI_Gather(resultmatrix , resultmatsize/size, MPI_INT, resultmat_data, resultmatsize/size, MPI_INT, source, MPI_COMM_WORLD);
 
 sprintf(outstring,"matrix gathering finished");
