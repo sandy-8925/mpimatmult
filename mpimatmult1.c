@@ -19,8 +19,9 @@ int main(int argc, char **argv)
 {
 int ierr,size,source;
 long i,counter;
-int mat1_rows=1000,mat1_cols=1000;
-int mat2_rows=1000,mat2_cols=1000;
+int mat1_rows=1000,mat1_cols,comm_dim=1000;
+int mat2_rows,mat2_cols=1000;
+mat1_cols = mat2_rows = comm_dim;
 int resultmat_rows=mat1_rows,resultmat_cols=mat2_cols;
 int *matrix1,*matrix2,*resultmatrix,*resultmat_data,*mat1_data;
 long mat1size = mat1_rows * mat1_cols;
@@ -29,7 +30,7 @@ long resultmatsize = resultmat_rows * resultmat_cols;
 char outstring[10000],temp[20];
 double start_time,end_time;
 
-if(argc<5)
+if(argc<4)
 {
 printf("Not enough arguments\n");
 return ERR_NOT_ENOUGH_ARGUMENTS;
@@ -37,9 +38,9 @@ return ERR_NOT_ENOUGH_ARGUMENTS;
 else
 {
 mat1_rows = atoi(argv[1]);
-mat1_cols = atoi(argv[2]);
-mat2_rows = atoi(argv[3]);
-mat2_cols = atoi(argv[4]);
+comm_dim = atoi(argv[2]);
+mat1_cols = mat2_rows = comm_dim;
+mat2_cols = atoi(argv[3]);
 resultmat_rows = mat1_rows;
 resultmat_cols = mat2_cols;
 }
