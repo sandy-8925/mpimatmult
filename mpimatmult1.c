@@ -27,6 +27,7 @@ long mat1size = mat1_rows * mat1_cols;
 long mat2size = mat2_rows * mat2_cols;
 long resultmatsize = resultmat_rows * resultmat_cols;
 char outstring[10000],temp[20];
+double start_time,end_time;
 
 if(argc<5)
 {
@@ -67,6 +68,7 @@ else
 {
 }
 
+MPI_Barrier(MPI_COMM_WORLD);
 //distribute data
 //MPI_Bcast(matrix1, mat1size, MPI_INT, source, MPI_COMM_WORLD);
 MPI_Scatter(mat1_data, mat1size/size, MPI_INT, matrix1, mat1size/size, MPI_INT, source, MPI_COMM_WORLD);
@@ -79,6 +81,9 @@ long counter1,counter2,counter3;
 sprintf(outstring,"about to start matrix multiplication");
 debugprintf(outstring);
 //do matrix multiplication
+
+start_time = MPI_Wtime();
+
 for(counter1 = 0 ; counter1 < resultmat_rows/size ; counter1++)
 {
 for(counter2=0 ; counter2<resultmat_cols; counter2++)
@@ -90,10 +95,15 @@ for(counter3=0 ; counter3<mat1_cols ; counter3++)
 }
 }
 
-sprintf(outstring,"matrix multiplication finished");
+end_time = MPI_Wtime();
+sprintf(outstring, "MPI Walltime: %f",end_time - start_time);
+debugprintf(outstring);
+
+sprintf(outstring, "matrix multiplication finished");
 debugprintf(outstring);
 
 //return result to process rank 0
+MPI_Barrier(MPI_COMM_WORLD);
 MPI_Gather(resultmatrix , resultmatsize/size, MPI_INT, resultmat_data, resultmatsize/size, MPI_INT, source, MPI_COMM_WORLD);
 
 sprintf(outstring,"matrix gathering finished");
@@ -123,10 +133,12 @@ debugprintf(outstring);
 if(rank == source)
 { free(resultmat_data); }
 
-ierr = MPI_Finalize();
+/*
 free(matrix1);
 free(matrix2);
 free(resultmatrix);
+*/
+ierr = MPI_Finalize();
 
 return 0;
 }
