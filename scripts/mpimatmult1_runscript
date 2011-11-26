@@ -11,7 +11,7 @@ lnodestring="$numnodes:ppn=$ppn"
 
 #run test 5 times
 counter=1
-while [ counter -le 5 ]
+while [ $counter -le 5 ]
 do
 #run test
 qsub -v mat1_rows=$mat1_rows,comm_dim=$comm_dim,mat2_cols=$mat2_cols,numprocs=$numprocs pbs_script_mpimatmult1 -lwalltime=$walltime -lnodes=$lnodestring 
