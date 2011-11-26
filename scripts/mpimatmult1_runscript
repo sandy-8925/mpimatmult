@@ -1,17 +1,19 @@
 
-counter=1
 mat1_rows=1000
 comm_dim=1000
 mat2_cols=1000
 walltime=00:05:00
 numnodes=1
 ppn=8
+numprocs=2
+
+lnodestring="$numnodes:ppn=$ppn"
 
 #run test 5 times
+counter=1
 while [ counter -le 5 ]
 do
 #run test
-lnodestring="$numnodes:ppn=$ppn"
-qsub -v mat1_rows=$mat1_rows,comm_dim=$comm_dim,mat2_cols=$mat2_cols,numprocs=2 pbs_script_mpimatmult1 -lwalltime=$walltime -lnodes=$lnodestring 
+qsub -v mat1_rows=$mat1_rows,comm_dim=$comm_dim,mat2_cols=$mat2_cols,numprocs=$numprocs pbs_script_mpimatmult1 -lwalltime=$walltime -lnodes=$lnodestring 
 counter=$(($counter+1))
 done
