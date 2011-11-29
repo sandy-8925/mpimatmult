@@ -96,6 +96,8 @@ for(counter3=0 ; counter3<mat1_cols ; counter3++)
 { tempsum += *(matrix1 + counter1*mat1_cols + counter3) * *(matrix2 + counter3*mat2_cols + counter2); }
 *(resultmatrix + counter1*resultmat_cols + counter2) = tempsum;
 }
+sprintf(outstring,"End of round %d",counter1);
+debugprintf(outstring);
 }
 
 MPI_Barrier(MPI_COMM_WORLD);
