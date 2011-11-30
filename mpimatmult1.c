@@ -24,9 +24,7 @@ int mat2_rows,mat2_cols=1000;
 mat1_cols = mat2_rows = comm_dim;
 int resultmat_rows=mat1_rows,resultmat_cols=mat2_cols;
 int *matrix1,*matrix2,*resultmatrix,*resultmat_data,*mat1_data;
-long mat1size = mat1_rows * mat1_cols;
-long mat2size = mat2_rows * mat2_cols;
-long resultmatsize = resultmat_rows * resultmat_cols;
+long mat1size,mat2size,resultmatsize;
 char outstring[10000],temp[20];
 double start_time,end_time;
 
@@ -43,6 +41,9 @@ mat1_cols = mat2_rows = comm_dim;
 mat2_cols = atoi(argv[3]);
 resultmat_rows = mat1_rows;
 resultmat_cols = mat2_cols;
+mat1size = mat1_rows * mat1_cols;
+mat2size = mat2_rows * mat2_cols;
+resultmatsize = resultmat_rows * resultmat_cols;
 }
 
 MPI_Init(&argc,&argv);
