@@ -135,7 +135,7 @@ debugprintf(outstring);
 sprintf(outstring,"finished");
 debugprintf(outstring);
 
-MPI_Barrier();
+MPI_Barrier(MPI_COMM_WORLD);
 
 if(rank == source)
 { free(resultmat_data); }
