@@ -71,7 +71,6 @@ else
 
 MPI_Barrier(MPI_COMM_WORLD);
 //distribute data
-//MPI_Bcast(matrix1, mat1size, MPI_INT, source, MPI_COMM_WORLD);
 MPI_Scatter(mat1_data, mat1size/size, MPI_INT, matrix1, mat1size/size, MPI_INT, source, MPI_COMM_WORLD);
 MPI_Bcast(matrix2, mat2size, MPI_INT, source, MPI_COMM_WORLD);
 
@@ -97,7 +96,7 @@ for(counter3=0 ; counter3<mat1_cols ; counter3++)
 *(resultmatrix + counter1*resultmat_cols + counter2) = tempsum;
 }
 sprintf(outstring,"End of round %d",counter1);
-debugprintf(outstring);
+//debugprintf(outstring);
 }
 
 MPI_Barrier(MPI_COMM_WORLD);
@@ -136,14 +135,15 @@ debugprintf(outstring);
 sprintf(outstring,"finished");
 debugprintf(outstring);
 
+MPI_Barrier();
+
 if(rank == source)
 { free(resultmat_data); }
 
-/*
 free(matrix1);
 free(matrix2);
 free(resultmatrix);
-*/
+
 ierr = MPI_Finalize();
 
 return 0;
