@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <strings.h>
 
+//TODO: change #define symbols to integer variables and initialize using command line args
+
+/*
 #define mat_comm_dim 1000
 #define matA_rows 1000
 #define matA_cols mat_comm_dim
@@ -9,14 +12,39 @@
 #define matB_cols 1000
 #define matC_rows matA_rows
 #define matC_cols matB_cols
+*/
 
-
-int main()
+int main(int argc, char **argv)
 {
+int mat_comm_dim = 1000;
+int matA_rows = 1000,matA_cols = mat_comm_dim,matB_rows = mat_comm_dim,matB_cols = 1000;
+int matC_rows = matA_rows, matC_cols = matB_cols;
+
+long matAsize = matA_rows * matA_cols;
+long matBsize = matB_rows * matB_cols;
+long matCsize = matC_rows * matC_cols;
+
+if(argc < 4)
+{
+printf("Not enough arguments\n");
+}
+else
+{
+matA_rows = atoi(argv[1]);
+mat_comm_dim = atoi(argv[2]);
+matA_cols = matB_rows = mat_comm_dim;
+matB_cols = atoi(argv[3]);
+matC_rows = matA_rows;
+matC_cols = matB_cols;
+matAsize = matA_rows * matA_cols;
+matBsize = matB_rows * matB_cols;
+matCsize = matC_rows * matC_cols;
+}
+
 int *matrixA,*matrixB,*matrixC;
-matrixA = (int *)calloc(sizeof(int),matA_rows*matA_cols);
-matrixB = (int *)calloc(sizeof(int),matB_rows*matB_cols);
-matrixC = (int *)calloc(sizeof(int),matC_rows*matC_cols);
+matrixA = (int *)calloc(matAsize,sizeof(int));
+matrixB = (int *)calloc(matBsize,sizeof(int));
+matrixC = (int *)calloc(matCsize,sizeof(int));
 int temp,counter1,counter2,counter3;
 
 //TODO: read input matrices from file

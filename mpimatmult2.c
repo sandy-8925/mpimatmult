@@ -48,6 +48,9 @@ mat2_rows = atoi(argv[3]);
 mat2_cols = atoi(argv[4]);
 resultmat_rows = mat1_rows;
 resultmat_cols = mat2_cols;
+mat1size = mat1_rows * mat1_cols;
+mat2size = mat2_rows * mat2_cols;
+resultmatsize = resultmat_rows * resultmat_cols;
 }
 
 MPI_Init(&argc,&argv);
