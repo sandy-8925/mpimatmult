@@ -71,7 +71,7 @@ for(counter1=0 ; counter1 < matB_rows ; counter1++)
  { *(matrixB + counter1*matB_cols + counter2) = (int) random()%65536; }
 }
 
-start_time = MPI_Walltime();
+start_time = MPI_Wtime();
 
 //do matrix multiplication
 for(counter1=0; counter1 < matC_rows; counter1++)
@@ -85,7 +85,7 @@ for(counter1=0; counter1 < matC_rows; counter1++)
   }
 }
 
-end_time = MPI_Walltime();
+end_time = MPI_Wtime();
 printf("Walltime: %f\n",end_time - start_time);
 
 //TODO: write results to file
