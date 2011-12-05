@@ -24,8 +24,12 @@ int main(int argc, char **argv)
 {
 int ierr,size,source;
 long i,counter;
-int mat1_rows=1000,mat1_cols=1000;
-int mat2_rows=1000,mat2_cols=1000;
+int mat1_rows,mat1_cols;
+int mat2_rows,mat2_cols;
+mat1_rows = 1000;
+mat2_cols = 1000;
+int comm_dim = 1000;
+mat1_cols = mat2_rows = comm_dim;
 int resultmat_rows=mat1_rows,resultmat_cols=mat2_cols;
 int *matrix1,*matrix2,*resultmatrix,*resultmat_data,*mat1_data=NULL,*mat2_data=NULL;
 long mat1size = mat1_rows * mat1_cols;
@@ -43,9 +47,9 @@ return ERR_NOT_ENOUGH_ARGUMENTS;
 else
 {
 mat1_rows = atoi(argv[1]);
-mat1_cols = atoi(argv[2]);
-mat2_rows = atoi(argv[3]);
-mat2_cols = atoi(argv[4]);
+comm_dim = atoi(argv[2]);
+mat1_cols = mat2_rows = comm_dim;
+mat2_cols = atoi(argv[3]);
 resultmat_rows = mat1_rows;
 resultmat_cols = mat2_cols;
 mat1size = mat1_rows * mat1_cols;
@@ -73,6 +77,7 @@ mat1_data = (int *) calloc(mat1size,sizeof(int));
 mat2_data = (int *) calloc(mat2size,sizeof(int));
 for(i=0 ; i<mat1size ; i++) { *(mat1_data + i) = i; }
 for(i=0 ; i<mat2size ; i++) { *(mat2_data + i) = i; }
+//TODO: transpose matrix 2. right now, we assume that it is already transposed
 sprintf(outstring, "Finished generating data");
 debugprintf(outstring);
 }
@@ -86,6 +91,8 @@ debugprintf(outstring);
 MPI_Scatter(mat1_data, mat1size/size, MPI_INT, matrix1, mat1size/size, MPI_INT, source, MPI_COMM_WORLD);
 MPI_Scatter(mat2_data, mat2size/size, MPI_INT, matrix2, mat2size/size, MPI_INT, source, MPI_COMM_WORLD);
 //MPI_Bcast(matrix2, mat2size, MPI_INT, source, MPI_COMM_WORLD);
+
+MPI_Barrier(MPI_COMM_WORLD);
 
 if(rank == source)
 {
@@ -112,13 +119,13 @@ for(counter2=0 ; counter2<resultmat_cols/size ; counter2++)
 {
 int tempsum = 0;
 for(counter3=0 ; counter3<mat1_cols ; counter3++)
+//it is assumed that matrix 2 stored columnwise instead of rowwise
 { tempsum += *(matrix1 + counter1*mat1_cols + counter3) * *(matrix2 + counter2*mat2_rows + counter3); }
 *(resultmatrix + counter1*resultmat_cols + portion*resultmat_cols/size + counter2  ) = tempsum;
 }
 }
 sprintf(outstring, "Finished round %d", counter4);
 debugprintf(outstring);
-/*
 //exchange data if required
 if(counter4<size-1)
 {
@@ -128,7 +135,6 @@ bcopy(matrix2, mat2_data, mat2size*sizeof(int)/size);
 MPI_Isend(mat2_data, mat2size/size, MPI_INT, (rank+1)%rank, MATB_EXCHANGE_TAG, MPI_COMM_WORLD, &request);
 MPI_Recv(matrix2, mat2size/size, MPI_INT, (rank-1)%rank, MATB_EXCHANGE_TAG, MPI_COMM_WORLD, &status);
 }
-*/
 }
 
 sprintf(outstring,"Matrix multiplication finished\n");
@@ -160,13 +166,14 @@ debugprintf(outstring);
 
 sprintf(outstring,"finished");
 debugprintf(outstring);
-/*
+
+MPI_Barrier(MPI_COMM_WORLD);
+
 if(rank == source)
 { free(resultmat_data); }
-*/
 free(matrix1);
 free(matrix2);
-//free(resultmatrix);
+free(resultmatrix);
 
 ierr = MPI_Finalize();
 
