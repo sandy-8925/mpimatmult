@@ -39,7 +39,7 @@ char outstring[10000],temp[20];
 MPI_Request request;
 MPI_Status status;
 
-if(argc<5)
+if(argc<4)
 {
 printf("Not enough arguments\n");
 return ERR_NOT_ENOUGH_ARGUMENTS;
