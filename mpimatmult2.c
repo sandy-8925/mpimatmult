@@ -132,8 +132,8 @@ if(counter4<size-1)
 MPI_Barrier(MPI_COMM_WORLD);
 //do non-blocking send and blocking receive
 bcopy(matrix2, mat2_data, mat2size*sizeof(int)/size);
-MPI_Isend(mat2_data, mat2size/size, MPI_INT, (rank+1)%rank, MATB_EXCHANGE_TAG, MPI_COMM_WORLD, &request);
-MPI_Recv(matrix2, mat2size/size, MPI_INT, (rank-1)%rank, MATB_EXCHANGE_TAG, MPI_COMM_WORLD, &status);
+MPI_Isend(mat2_data, mat2size/size, MPI_INT, (rank+1)%size, MATB_EXCHANGE_TAG, MPI_COMM_WORLD, &request);
+MPI_Recv(matrix2, mat2size/size, MPI_INT, (rank-1)%size, MATB_EXCHANGE_TAG, MPI_COMM_WORLD, &status);
 }
 }
 
