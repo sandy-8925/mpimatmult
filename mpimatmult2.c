@@ -38,6 +38,7 @@ long resultmatsize = resultmat_rows * resultmat_cols;
 char outstring[10000],temp[20];
 MPI_Request request;
 MPI_Status status;
+double start_time,end_time;
 
 if(argc<4)
 {
@@ -108,6 +109,9 @@ mat2_data = (int *) calloc(mat2size/size, sizeof(int));
 sprintf(outstring,"Finished distributing data and about to start matrix multiplication");
 debugprintf(outstring);
 
+MPI_Barrier(MPI_COMM_WORLD);
+start_time = MPI_Wtime();
+
 for(counter4=0; counter4<size; counter4++)
 {
 sprintf(outstring, "Started round %d", counter4);
@@ -136,6 +140,12 @@ MPI_Isend(mat2_data, mat2size/size, MPI_INT, (rank+1)%size, MATB_EXCHANGE_TAG, M
 MPI_Recv(matrix2, mat2size/size, MPI_INT, (rank-1)%size, MATB_EXCHANGE_TAG, MPI_COMM_WORLD, &status);
 }
 }
+
+MPI_Barrier(MPI_COMM_WORLD);
+end_time = MPI_Wtime();
+
+sprintf(outstring,"MPI walltime: %f\n", end_time - start_time);
+debugprintf(outstring);
 
 sprintf(outstring,"Matrix multiplication finished\n");
 debugprintf(outstring);
