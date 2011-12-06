@@ -150,7 +150,6 @@ debugprintf(outstring);
 sprintf(outstring,"Matrix multiplication finished\n");
 debugprintf(outstring);
 
-MPI_Barrier(MPI_COMM_WORLD);
 free(mat2_data);
 mat2_data=NULL;
 //return result to process rank 0
