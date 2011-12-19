@@ -115,7 +115,7 @@ start_time = MPI_Wtime();
 for(counter4=0; counter4<size; counter4++)
 {
 sprintf(outstring, "Started round %d", counter4);
-debugprintf(outstring);
+//debugprintf(outstring);
 int portion = (rank - counter4)%size;
 for(counter1=0 ; counter1<resultmat_rows/size ; counter1++)
 {
@@ -129,7 +129,7 @@ for(counter3=0 ; counter3<mat1_cols ; counter3++)
 }
 }
 sprintf(outstring, "Finished round %d", counter4);
-debugprintf(outstring);
+//debugprintf(outstring);
 //exchange data if required
 if(counter4<size-1)
 {
