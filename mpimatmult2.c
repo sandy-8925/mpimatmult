@@ -131,7 +131,7 @@ for(counter3=0 ; counter3<mat1_cols ; counter3++)
 sprintf(outstring, "Finished round %d", counter4);
 //debugprintf(outstring);
 //exchange data if required
-if(counter4<size-1)
+if(counter4 < size-1)
 {
 MPI_Barrier(MPI_COMM_WORLD);
 //do non-blocking send and blocking receive
@@ -176,7 +176,7 @@ debugprintf(outstring);
 sprintf(outstring,"finished");
 debugprintf(outstring);
 
-MPI_Barrier(MPI_COMM_WORLD);
+//MPI_Barrier(MPI_COMM_WORLD);
 /*
 if(rank == source)
 { free(resultmat_data); }
@@ -186,5 +186,10 @@ free(resultmatrix);
 */
 ierr = MPI_Finalize();
 
+/*if(ierr != MPI_SUCCESS)
+{
+debugprintf("MPI_Finalize did not return MPI_SUCCESS!\n");
+}*/
+printf("After MPI_Finalize\n");
 return 0;
 }
