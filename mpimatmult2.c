@@ -94,9 +94,9 @@ MPI_Scatter(mat2_data, mat2size/size, MPI_INT, matrix2, mat2size/size, MPI_INT, 
 
 if( rank == source )
 {
-sprintf(outstring,"Matrix 1 memory usage per process: %f bytes \n",mat1size*sizeof(int)/size);
+sprintf(outstring,"Matrix 1 memory usage per process: %f bytes \n",(float) mat1size*sizeof(int)/size);
 debugprintf(outstring);
-sprintf(outstring,"Matrix 2 memory usage per process: %f bytes \n",mat2size*sizeof(int)/size);
+sprintf(outstring,"Matrix 2 memory usage per process: %f bytes \n",(float) mat2size*sizeof(int)/size);
 debugprintf(outstring);
 }
 
